@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Security.Cryptography;
 
 namespace Name
 {
-    public class Empleado
+public class Empleado
     {
         public string nombre;
         public int edad;
@@ -71,12 +71,16 @@ class Program
 {
     static void Main(string[] args)
     {
+        Empleado empleado2 = new Empleado("Edu", 20, 2500, 20);
         Empleado empleado = new Empleado("Fernando", 25, 2500, 10);
         Vendedor vendedor = new Vendedor("Alvaro", 39, 2000, 32, "Norte");
         Supervisor supervisor = new Supervisor("Joel", 23, 4000, 20, "BC");
+        Servicio servicio = new Servicio("Eduardo", 25, 4500, 24, "Call center");
         empleado.mostrarDatos();
         vendedor.mostrarDatos();
         supervisor.mostrarDatos();
+        servicio.mostrarDatos();
+        empleado2.mostrarDatos();
     }
 }
 }
