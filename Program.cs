@@ -81,11 +81,10 @@ class Program
         Supervisor supervisor = new Supervisor("Joel", 23, 4000, 20, "BC");
         Servicio servicio = new Servicio("Eduardo", 25, 4500, 24, "Call center");
         empleado.mostrarDatos();
+        empleado2.mostrarDatos();
         vendedor.mostrarDatos();
         supervisor.mostrarDatos();
         servicio.mostrarDatos();
-        empleado2.mostrarDatos();
     }
-}
 }
 }
