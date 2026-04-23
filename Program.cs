@@ -34,7 +34,7 @@ public class Supervisor : Empleado
         this.region = region;
     }
 
-    public void mostrarDatos()
+    public new void mostrarDatos()
     {
         Console.WriteLine($"Supervisor {nombre}, edad {edad}, salario {salario}, antiguedad {antiguedad}, region {region}");
     }
@@ -49,6 +49,10 @@ public class Servicio : Empleado
     {
         this.area = area;
     }
+    public new void mostrarDatos()
+    {
+        Console.WriteLine($"Servicio al cliente {nombre}, edad {edad}, salario {salario}, antiguedad {antiguedad}, area {area}");
+    }
 }
 
 public class Vendedor : Empleado
@@ -61,7 +65,7 @@ public class Vendedor : Empleado
         this.tipo = tipo;
     }
 
-    public void mostrarDatos()
+    public new void mostrarDatos()
     {
         Console.WriteLine($"Vendedor {nombre}, edad {edad}, salario {salario}, antiguedad {antiguedad}, tipo {tipo}");
     }
@@ -82,5 +86,6 @@ class Program
         servicio.mostrarDatos();
         empleado2.mostrarDatos();
     }
+}
 }
 }
