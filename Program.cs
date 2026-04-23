@@ -1,82 +1,82 @@
 ﻿using System;
+using System.Security.Cryptography;
 
-class Program {
-    internal class Usuario {
+namespace Name
+{
+    public class Empleado
+    {
         public string nombre;
-        public string mail;
-        public string password;
+        public int edad;
+        public int salario;
+        public int antiguedad;
 
-        public void mostrarNombre() {
-            Console.WriteLine($"Mi nombre es {nombre}");
+        public Empleado(string nombre, int edad, int salario, int antiguedad)
+        {
+            this.nombre = nombre;
+            this.edad = edad;
+            this.salario = salario;
+            this.antiguedad = antiguedad;
         }
+
+    public void mostrarDatos()
+    {
+        Console.WriteLine($"Empleado {nombre}, edad {edad}, salario {salario}, antiguedad {antiguedad}");
     }
-    public class Administrador : Usuario {
-        public string id;
-        
-        public void ExpulsarUsuario() {
-            Console.WriteLine("Eliminando usuario...");
-        }
-        public void AgregandoUsuario() {
-            Console.WriteLine("Agregando usuario...");
-        }
-    }
-    public class Moderador : Usuario {
-        public string id;
-        
-        public void EliminarMensaje() {
-            Console.WriteLine("Eliminando mensaje...");
-        }
     }
 
+public class Supervisor : Empleado
+{
+    public string region;
 
-    internal class Arbol {
-        public string especie;
-        public float altura;
-        public string fruto;
-
-        public void MostrarFruto() {
-            Console.WriteLine($"Este arbol da {fruto}");
-        }
-    }
-    public class Manzano : Arbol {
-        string especie = "manzano";
-        float altura = 280;
-        string fruto = "manzanas";
+    public Supervisor(string nombre, int edad, int salario, int antiguedad, string region)
+        : base(nombre, edad, salario, antiguedad)
+    {
+        this.region = region;
     }
 
-    public class Palmera : Arbol {
-        string especie = "palmera";
-        float altura = 350;
-        string fruto = "cocos";
+    public void mostrarDatos()
+    {
+        Console.WriteLine($"Supervisor {nombre}, edad {edad}, salario {salario}, antiguedad {antiguedad}, region {region}");
+    }
+}
+
+public class Servicio : Empleado
+{
+    public string area;
+
+    public Servicio(string nombre, int edad, int salario, int antiguedad, string area)
+        : base(nombre, edad, salario, antiguedad)
+    {
+        this.area = area;
+    }
+}
+
+public class Vendedor : Empleado
+{
+    public string tipo;
+
+    public Vendedor(string nombre, int edad, int salario, int antiguedad, string tipo)
+        : base(nombre, edad, salario, antiguedad)
+    {
+        this.tipo = tipo;
     }
 
-
-    internal class primate {
-        public float altura;
-        public float peso;
-
-        public void MostrarPeso() {
-            Console.WriteLine($"Este primate pesa {peso} kilos");
-        }
+    public void mostrarDatos()
+    {
+        Console.WriteLine($"Vendedor {nombre}, edad {edad}, salario {salario}, antiguedad {antiguedad}, tipo {tipo}");
     }
-    public class gorila : primate {
-        float altura = 170;
-        float peso = 50000;
+}
 
-        public void MostrarPeso() {
-            Console.WriteLine($"Este primate es un gorila y pesa {peso} kilos");
-        }
+class Program
+{
+    static void Main(string[] args)
+    {
+        Empleado empleado = new Empleado("Fernando", 25, 2500, 10);
+        Vendedor vendedor = new Vendedor("Alvaro", 39, 2000, 32, "Norte");
+        Supervisor supervisor = new Supervisor("Joel", 23, 4000, 20, "BC");
+        empleado.mostrarDatos();
+        vendedor.mostrarDatos();
+        supervisor.mostrarDatos();
     }
-    public class capuccino : primate {
-        float altura = 47;
-        float peso = 100;
-    }
-
-    static void Main(string[] args) {
-        gorila gorila = new gorila();
-        gorila.MostrarPeso();
-
-        Administrador administrador = new Administrador();
-        administrador.AgregandoUsuario();
-    }
+}
 }
