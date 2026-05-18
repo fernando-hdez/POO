@@ -1,0 +1,287 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Emit;
+using System.Reflection.Metadata.Ecma335;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VeterinariaApp
+{
+    class Program
+    {
+        public class Usuario
+        {
+            public string Nombre { get; set; } = string.Empty;
+            public string Apellido { get; set; } = string.Empty;
+            public string Telefono { get; set; } = string.Empty;
+            public string Correo { get; set; } = string.Empty;
+        }
+        public class Mascota
+        {
+            public string Nombre { get; set; } = string.Empty;
+            public string Especie { get; set; } = string.Empty;
+            public string Raza { get; set; } = string.Empty;
+            public int Edad { get; set; }
+        }
+        public class Cita
+        {
+            public Usuario Propietario { get; set; } = default!;
+            public Mascota Mascota { get; set; } = default!;
+            public DateTime Fecha { get; set; }
+        }
+
+        static int EncontrarIndiceLibre<T>(T[] arreglo) where T : class
+        {
+            return Array.FindIndex(arreglo, item => item == null);
+        }
+
+        static void RegistrarUsuario(Usuario[] usuarios)
+        {
+            int indice = EncontrarIndiceLibre(usuarios);
+            if (indice < 0)
+            {
+                Console.WriteLine("No se pueden registrar más usuarios. El arreglo está lleno.");
+                return;
+            }
+
+            Console.WriteLine("Ingrese el nombre del usuario:");
+            string nombre = Console.ReadLine()?.Trim() ?? string.Empty;
+
+            Console.WriteLine("Ingrese el apellido del usuario:");
+            string apellido = Console.ReadLine()?.Trim() ?? string.Empty;
+
+            Console.WriteLine("Ingrese el teléfono del usuario:");
+            string telefono = Console.ReadLine()?.Trim() ?? string.Empty;
+
+            Console.WriteLine("Ingrese el correo del usuario:");
+            string correo = Console.ReadLine()?.Trim() ?? string.Empty;
+
+            usuarios[indice] = new Usuario
+            {
+                Nombre = nombre,
+                Apellido = apellido,
+                Telefono = telefono,
+                Correo = correo
+            };
+
+            Console.WriteLine("Usuario registrado correctamente.");
+        }
+
+        static void RegistrarMascota(Mascota[] mascotas)
+        {
+            int indice = EncontrarIndiceLibre(mascotas);
+            if (indice < 0)
+            {
+                Console.WriteLine("No se pueden registrar más mascotas. El arreglo está lleno.");
+                return;
+            }
+
+            Console.WriteLine("Ingrese el nombre de la mascota:");
+            string nombre = Console.ReadLine()?.Trim() ?? string.Empty;
+
+            Console.WriteLine("Ingrese la especie de la mascota:");
+            string especie = Console.ReadLine()?.Trim() ?? string.Empty;
+
+            Console.WriteLine("Ingrese la raza de la mascota:");
+            string raza = Console.ReadLine()?.Trim() ?? string.Empty;
+
+            int edad;
+            while (true)
+            {
+                Console.WriteLine("Ingrese la edad de la mascota:");
+                string entradaEdad = Console.ReadLine()?.Trim() ?? string.Empty;
+                if (int.TryParse(entradaEdad, out edad) && edad >= 0)
+                {
+                    break;
+                }
+                Console.WriteLine("Edad inválida. Ingrese un número entero mayor o igual a cero.");
+            }
+
+            mascotas[indice] = new Mascota
+            {
+                Nombre = nombre,
+                Especie = especie,
+                Raza = raza,
+                Edad = edad
+            };
+
+            Console.WriteLine("Mascota registrada correctamente.");
+        }
+
+        static void AgendarCita(Usuario[] usuarios, Mascota[] mascotas, Cita[] citas)
+        {
+            if (!Array.Exists(usuarios, u => u != null))
+            {
+                Console.WriteLine("No hay usuarios registrados. Registre un usuario antes de agendar una cita.");
+                return;
+            }
+
+            if (!Array.Exists(mascotas, m => m != null))
+            {
+                Console.WriteLine("No hay mascotas registradas. Registre una mascota antes de agendar una cita.");
+                return;
+            }
+
+            Console.WriteLine("Usuarios disponibles:");
+            for (int i = 0; i < usuarios.Length; i++)
+            {
+                if (usuarios[i] != null)
+                {
+                    Console.WriteLine($"{i + 1}. {usuarios[i].Nombre} {usuarios[i].Apellido}");
+                }
+            }
+
+            int indiceUsuario;
+            while (true)
+            {
+                Console.Write("Seleccione el número del propietario: ");
+                string entrada = Console.ReadLine()?.Trim() ?? string.Empty;
+                if (int.TryParse(entrada, out indiceUsuario) && indiceUsuario >= 1 && indiceUsuario <= usuarios.Length && usuarios[indiceUsuario - 1] != null)
+                {
+                    break;
+                }
+                Console.WriteLine("Selección inválida. Intente de nuevo.");
+            }
+
+            Console.WriteLine("Mascotas disponibles:");
+            for (int i = 0; i < mascotas.Length; i++)
+            {
+                if (mascotas[i] != null)
+                {
+                    Console.WriteLine($"{i + 1}. {mascotas[i].Nombre} ({mascotas[i].Especie} - {mascotas[i].Raza})");
+                }
+            }
+
+            int indiceMascota;
+            while (true)
+            {
+                Console.Write("Seleccione el número de la mascota: ");
+                string entrada = Console.ReadLine()?.Trim() ?? string.Empty;
+                if (int.TryParse(entrada, out indiceMascota) && indiceMascota >= 1 && indiceMascota <= mascotas.Length && mascotas[indiceMascota - 1] != null)
+                {
+                    break;
+                }
+                Console.WriteLine("Selección inválida. Intente de nuevo.");
+            }
+
+            DateTime fecha;
+            while (true)
+            {
+                Console.WriteLine("Ingrese la fecha de la cita (YYYY-MM-DD HH:mm):");
+                string entradaFecha = Console.ReadLine()?.Trim() ?? string.Empty;
+                if (DateTime.TryParse(entradaFecha, out fecha))
+                {
+                    break;
+                }
+                Console.WriteLine("Formato de fecha inválido. Intente otra vez.");
+            }
+
+            int indiceCita = EncontrarIndiceLibre(citas);
+            if (indiceCita < 0)
+            {
+                Console.WriteLine("No se pueden agendar más citas. El arreglo está lleno.");
+                return;
+            }
+
+            citas[indiceCita] = new Cita
+            {
+                Propietario = usuarios[indiceUsuario - 1]!,
+                Mascota = mascotas[indiceMascota - 1]!,
+                Fecha = fecha
+            };
+
+            Console.WriteLine("Cita agendada correctamente.");
+        }
+
+        static void MostrarUsuarios(Usuario[] usuarios)
+        {
+            Console.WriteLine("Usuarios registrados:");
+            foreach (var usuario in usuarios)
+            {
+                if (usuario != null)
+                {
+                    Console.WriteLine($"Nombre: {usuario.Nombre} {usuario.Apellido}, Teléfono: {usuario.Telefono}, Correo: {usuario.Correo}");
+                }
+            }
+        }
+
+        static void MostrarMascotas(Mascota[] mascotas)
+        {
+            Console.WriteLine("Mascotas registradas:");
+            foreach (var mascota in mascotas)
+            {
+                if (mascota != null)
+                {
+                    Console.WriteLine($"Nombre: {mascota.Nombre}, Especie: {mascota.Especie}, Raza: {mascota.Raza}, Edad: {mascota.Edad}");
+                }
+            }
+        }
+
+        static void MostrarCitas(Cita[] citas)
+        {
+            Console.WriteLine("Citas agendadas:");
+            foreach (var cita in citas)
+            {
+                if (cita != null)
+                {
+                    Console.WriteLine($"Fecha: {cita.Fecha:yyyy-MM-dd HH:mm}, Propietario: {cita.Propietario.Nombre} {cita.Propietario.Apellido}, Mascota: {cita.Mascota.Nombre} ({cita.Mascota.Especie} - {cita.Mascota.Raza})");
+                }
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            Console.Clear();
+            Usuario[] usuarios = new Usuario[10];
+            Mascota[] mascotas = new Mascota[10];
+            Cita[] citas = new Cita[10];
+
+            string opcion = string.Empty;
+            do
+            {
+                Console.WriteLine("Bienvenido a la Veterinaria");
+                Console.WriteLine("1. Registrar Usuario");
+                Console.WriteLine("2. Registrar Mascota");
+                Console.WriteLine("3. Agendar Cita");
+                Console.WriteLine("4. Mostrar Usuarios");
+                Console.WriteLine("5. Mostrar Mascotas");
+                Console.WriteLine("6. Mostrar Citas");
+                Console.WriteLine("7. Salir");
+                Console.Write("Seleccione una opción: ");
+                opcion = Console.ReadLine()?.Trim() ?? string.Empty;
+                Console.WriteLine();
+
+                switch (opcion)
+                {
+                    case "1":
+                        RegistrarUsuario(usuarios);
+                        break;
+                    case "2":
+                        RegistrarMascota(mascotas);
+                        break;
+                    case "3":
+                        AgendarCita(usuarios, mascotas, citas);
+                        break;
+                    case "4":
+                        MostrarUsuarios(usuarios);
+                        break;
+                    case "5":
+                        MostrarMascotas(mascotas);
+                        break;
+                    case "6":
+                        MostrarCitas(citas);
+                        break;
+                    case "7":
+                        Console.WriteLine("Saliendo del programa...");
+                        break;
+                    default:
+                        Console.WriteLine("Opción no válida. Por favor, intente de nuevo.");
+                        break;
+                }
+
+                Console.WriteLine();
+            } while (opcion != "7");
+        }
+    }
+}
