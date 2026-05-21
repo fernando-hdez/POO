@@ -1,10 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiVeterinaria
 {
@@ -59,6 +53,7 @@ namespace MiVeterinaria
 
         Console.Clear();
         Console.WriteLine($"Usuario {usuario.nombreUsuario} registrado exitosamente\n");
+        return;
 }
         public static void RegistrarMascota(Mascota[] mascotas, ref int contadorMascotas) 
         {
@@ -178,6 +173,7 @@ namespace MiVeterinaria
             }
             Console.WriteLine();
         }
+
         public static void MostrarUsuarios(Usuario[] usuarios, int contadorUsuarios) {
             Console.Clear();
             if (contadorUsuarios == 0) {
@@ -202,14 +198,15 @@ namespace MiVeterinaria
             }
             Console.WriteLine();
         }
+
         static void Main(string[] args)
         {
             Console.Clear();
-            Usuario[] usuarios = new Usuario[2];
+            Usuario[] usuarios = new Usuario[3];
             int contadorUsuarios = 0;
-            Mascota[] mascotas = new Mascota[2];
+            Mascota[] mascotas = new Mascota[3];
             int contadorMascotas = 0;
-            Cita[] citas = new Cita[2];
+            Cita[] citas = new Cita[3];
             int contadorCitas = 0;
             char opc;
 
@@ -218,7 +215,7 @@ namespace MiVeterinaria
             Console.WriteLine("Bienvenido a Mi Veterinaria\n");   
             Console.WriteLine("Eliga una opción:");
 
-            Console.WriteLine(" (1) Registrar usuario\n (2) Registrar mascota\n (3) Agendar cita\n (4) Mostrar citas\n (5) Salir");
+            Console.WriteLine(" (1) Registrar usuario\n (2) Registrar mascota\n (3) Agendar cita\n (4) Mostrar citas\n (6) Mostrar citas por fecha\n (5) Salir");
             
             opc = Console.ReadKey().KeyChar;
             switch (opc)
